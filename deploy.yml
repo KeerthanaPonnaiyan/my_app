@@ -2,7 +2,7 @@
 - hosts: dev
   become: true
   vars:
-    tomcat_service: tomcat9
+    tomcat_service: tomcat
     tomcat_webapps_dir: /var/lib/{{ tomcat_service }}/webapps
  
   tasks:
