@@ -27,16 +27,16 @@ pipeline {
       	}
       }
 
-	// stage('SonarQube Analysis') {
- //            steps {
- //                script {
- //                    def mvnHome = tool name: 'maven3', type: 'maven'
- //                    withSonarQubeEnv('sonar') {
- //                        sh "${mvnHome}/bin/mvn sonar:sonar"
- //                    }
- //                }
- //            }
- //        }
+	stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def mvnHome = tool name: 'maven3', type: 'maven'
+                    withSonarQubeEnv('sonar') {
+                        sh "${mvnHome}/bin/mvn sonar:sonar"
+                    }
+                }
+            }
+        }
 
 	// stage('Ansible Deployment') {
  //            steps {
