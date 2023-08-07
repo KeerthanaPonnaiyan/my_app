@@ -1,0 +1,38 @@
+---
+- hosts: dev
+  become: true
+  vars:
+    tomcat_service: tomcat9
+    tomcat_webapps_dir: /var/lib/{{ tomcat_service }}/webapps
+ 
+  tasks:
+    - name: Install AWS CLI
+      apt:
+        name: awscli
+        state: present
+
+    - name: Download .war file from S3 bucket
+      shell: aws s3 cp s3://{{ s3_bucket }}/{{ s3_object_key }} /tmp/newapp.war
+      args:
+        executable: /bin/bash
+
+    - name: Stop Tomcat service
+      service:
+        name: "{{ tomcat_service }}"
+        state: stopped
+
+    - name: Remove existing .war file
+      file:
+        path: "{{ tomcat_webapps_dir }}/newapp.war"
+        state: absent
+
+    - name: Copy new .war file to Tomcat webapps directory
+      copy:
+        src: /tmp/newapp.war
+        dest: "{{ tomcat_webapps_dir }}/newapp.war"
+        remote_src: yes
+
+    - name: Start Tomcat service
+      service:
+        name: "{{ tomcat_service }}"
+        state: started          
