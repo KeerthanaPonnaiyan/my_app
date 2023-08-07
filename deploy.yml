@@ -18,7 +18,8 @@
 
     - name: Stop Tomcat service
       service:
-        name: "{{ tomcat_service }}"
+        # name: "{{ tomcat_service }}"
+        name: tomcat9
         state: stopped
 
     - name: Remove existing .war file
