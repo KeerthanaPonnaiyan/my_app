@@ -16,16 +16,16 @@ pipeline {
             }
         }
 	    
- //    stage('Upload to S3') {
- //      steps {
-	// sh '''
- //          AWS_ACCESS_KEY_ID='aws-credentials'
- //          AWS_SECRET_ACCESS_KEY='aws-credentials'
- //          AWS_DEFAULT_REGION=us-east-2
- //          aws s3 cp target/newapp-${TAG}.war s3://${S3_BUCKET}/newapp-${TAG}.war
- //            '''
- //      	}
- //      }
+    stage('Upload to S3') {
+      steps {
+	sh '''
+          AWS_ACCESS_KEY_ID='aws-credentials'
+          AWS_SECRET_ACCESS_KEY='aws-credentials'
+          AWS_DEFAULT_REGION=us-east-2
+          aws s3 cp target/newapp-${TAG}.war s3://${S3_BUCKET}/newapp-${TAG}.war
+            '''
+      	}
+      }
 
 	// stage('SonarQube Analysis') {
  //            steps {
