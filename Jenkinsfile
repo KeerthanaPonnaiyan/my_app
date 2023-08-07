@@ -41,7 +41,7 @@ pipeline {
 	stage('Ansible Deployment') {
             steps {
                script {
-                  ansiblePlaybook credentialsId: 'my_project', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'deploy.yml', extraVars: [
+                  ansiblePlaybook credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'deploy.yml', extraVars: [
                         's3_bucket': S3_BUCKET,
                         's3_object_key': "newapp-${TAG}.war"
                     ]
