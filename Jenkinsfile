@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
 	TAG = "v0.${env.BUILD_NUMBER}"
-	S3_BUCKET = "mybucket25072023"
+	S3_BUCKET = "mybucket-us-east-2"
 	ARTIFACTS_DIR = '/var/lib/jenkins/workspace/jenkins/src/main/webapp'
     }
     
