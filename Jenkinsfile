@@ -3,6 +3,7 @@ pipeline {
     environment {
 	TAG = "v0.${env.BUILD_NUMBER}"
 	S3_BUCKET = "mybucket25072023"
+	ARTIFACTS_DIR = '/var/lib/jenkins/workspace/jenkins/src/main/webapp'
     }
     
     stages {
@@ -15,6 +16,17 @@ pipeline {
                 }
             }
         }
+	    
+    stage('Upload to S3') {
+      steps {
+	sh '''
+          AWS_ACCESS_KEY_ID='aws-credentials'
+          AWS_SECRET_ACCESS_KEY='aws-credentials'
+          AWS_DEFAULT_REGION=us-east-2
+          aws s3 cp target/newapp-${TAG}.war s3://${S3_BUCKET}/newapp-${TAG}.war
+            '''
+      	}
+      }
 
 	stage('SonarQube Analysis') {
             steps {
@@ -38,15 +50,13 @@ pipeline {
             }
         }
 
-	  stage('Upload to S3') {
-      steps {
-	sh '''
-          AWS_ACCESS_KEY_ID='aws-credentials'
-          AWS_SECRET_ACCESS_KEY='aws-credentials'
-          AWS_DEFAULT_REGION=us-east-2
-          aws s3 cp target/newapp-${TAG}.war s3://${S3_BUCKET}/newapp-${TAG}.war
-            '''
-      	}
-      }
+       stage('Publish to S3') {
+            steps {
+                echo 'Publishing artifacts to S3...'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh "aws s3 cp ${env.ARTIFACTS_DIR} s3://${env.S3_BUCKET_NAME}/"
+                }
+            }
+       }
     }
 }
