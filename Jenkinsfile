@@ -54,7 +54,7 @@ pipeline {
             steps {
                 echo 'Publishing artifacts to S3...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                    sh "aws s3 cp ${env.ARTIFACTS_DIR} s3://${env.S3_BUCKET_NAME}/"
+                    sh "aws s3 cp ${env.ARTIFACTS_DIR} s3://${env.S3_BUCKET}/"
                 }
             }
        }
